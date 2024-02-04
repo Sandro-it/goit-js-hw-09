@@ -4,9 +4,8 @@ const localStorageKey = 'feedback-form-state';
 const savedState = JSON.parse(localStorage.getItem(localStorageKey));
 
 if (savedState) {
-  
-  form.elements.email.value = savedState.email || '';
-  form.elements.message.value = savedState.message || '';
+  form.elements.email.value = savedState.email?.trim() || '';
+  form.elements.message.value = savedState.message?.trim() || '';
 }
 
 form.addEventListener('input', event => {
@@ -21,13 +20,23 @@ form.addEventListener('input', event => {
 form.addEventListener('submit', event => {
   event.preventDefault();
 
-  const formData = {
-    email: form.elements.email.value,
-    message: form.elements.message.value,
-  };
+  const emailValue = form.elements.email.value.trim();
+  const messageValue = form.elements.message.value.trim();
 
-  console.log(formData);
+  if (emailValue && messageValue) {
+    
+    const formData = {
+      email: emailValue,
+      message: messageValue,
+    };
 
-  localStorage.removeItem(localStorageKey);
-  form.reset();
+     console.log(formData);
+
+    localStorage.removeItem(localStorageKey);
+    form.reset();
+  } else {
+    
+    alert('Будь ласка, заповніть обидва поля перед відправкою форми.');
+   }
 });
+
